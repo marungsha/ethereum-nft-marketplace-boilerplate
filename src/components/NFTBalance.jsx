@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMoralis } from "react-moralis";
 import { Card, Image, Tooltip, Modal, Input, Alert, Spin, Button } from "antd";
 import { useNFTBalance } from "hooks/useNFTBalance";
@@ -6,6 +6,8 @@ import { FileSearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useMoralisDapp } from "providers/MoralisDappProvider/MoralisDappProvider";
 import { getExplorer } from "helpers/networks";
 import { useWeb3ExecuteFunction } from "react-moralis";
+import AudioPlayer from 'react-h5-audio-player';
+import 'react-h5-audio-player/lib/styles.css';
 const { Meta } = Card;
 
 const styles = {
@@ -32,6 +34,10 @@ function NFTBalance() {
   const contractABIJson = JSON.parse(contractABI);
   const listItemFunction = "createMarketItem";
   const ItemImage = Moralis.Object.extend("ItemImages");
+
+  useEffect(() => {
+    console.log(NFTBalance)
+  }, [NFTBalance])
 
   async function list(nft, listPrice) {
     setLoading(true);
@@ -203,7 +209,17 @@ function NFTBalance() {
               }
               key={index}
             >
-              <Meta title={nft.name} description={nft.contract_type} />
+              <Meta title={nft.metadata && nft.metadata.name?nft.metadata.name:nft.name} description={nft.contract_type} />
+              {nft.metadata && nft.metadata.audio && <AudioPlayer style={{marginTop: 10}}
+                src={nft.metadata.audio}
+                showSkipControls={false}
+                showJumpControls={false}
+                autoPlayAfterSrcChange={false}
+                customAdditionalControls={[]}
+                customVolumeControls={[]}
+                onPlay={e => console.log("onPlay")}
+                // other props here
+              /> }
             </Card>
           ))}
       </div>
@@ -213,15 +229,17 @@ function NFTBalance() {
         visible={visible}
         onCancel={() => setVisibility(false)}
         onOk={() => list(nftToSend, price)}
+        maskClosable={!loading}
+        closable={!loading}
         okText="List"
         footer={[
-          <Button onClick={() => setVisibility(false)}>
+          <Button disabled={loading} onClick={() => setVisibility(false)}>
             Cancel
           </Button>,
-          <Button onClick={() => approveAll(nftToSend)} type="primary">
+          <Button disabled={loading} onClick={() => approveAll(nftToSend)} type="primary">
             Approve
           </Button>,
-          <Button onClick={() => list(nftToSend, price)} type="primary">
+          <Button disabled={loading} onClick={() => list(nftToSend, price)} type="primary">
             List
           </Button>
         ]}

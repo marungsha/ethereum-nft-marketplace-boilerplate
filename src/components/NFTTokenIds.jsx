@@ -16,6 +16,8 @@ import {
 import { useMoralisDapp } from "providers/MoralisDappProvider/MoralisDappProvider";
 import { getExplorer } from "helpers/networks";
 import { useWeb3ExecuteFunction } from "react-moralis";
+import AudioPlayer from 'react-h5-audio-player';
+import 'react-h5-audio-player/lib/styles.css';
 const { Meta } = Card;
 
 const styles = {
@@ -246,7 +248,8 @@ function NFTTokenIds({ inputValue, setInputValue }) {
             ))}
 
           {inputValue !== "explore" &&
-            NFTTokenIds.slice(0, 20).map((nft, index) => (
+          // .slice(0, 20)
+            NFTTokenIds.map((nft, index) => (
               <Card
                 hoverable
                 actions={[
@@ -279,7 +282,17 @@ function NFTTokenIds({ inputValue, setInputValue }) {
                 {getMarketItem(nft) && (
                   <Badge.Ribbon text="Buy Now" color="green"></Badge.Ribbon>
                 )}
-                <Meta title={nft.name} description={`#${nft.token_id}`} />
+                <Meta title={nft.metadata && nft.metadata.name? nft.metadata.name : nft.name} description={`#${nft.token_id}`} />
+                {nft.metadata && nft.metadata.audio && <AudioPlayer style={{marginTop: 10}}
+                  src={nft.metadata.audio}
+                  showSkipControls={false}
+                  showJumpControls={false}
+                  autoPlayAfterSrcChange={false}
+                  customAdditionalControls={[]}
+                  customVolumeControls={[]}
+                  onPlay={e => console.log("onPlay")}
+                  // other props here
+                /> }
               </Card>
             ))}
         </div>

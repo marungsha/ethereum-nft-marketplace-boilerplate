@@ -18,6 +18,7 @@ import NativeBalance from "components/NativeBalance";
 import "./style.css";
 import Text from "antd/lib/typography/Text";
 import NFTMarketTransactions from "components/NFTMarketTransactions";
+import MintNFT from "components/NFTMint";
 const { Header, Footer } = Layout;
 
 const styles = {
@@ -82,14 +83,18 @@ const App = ({ isServerInfo }) => {
             defaultSelectedKeys={["nftMarket"]}
           >
             <Menu.Item key="nftMarket" onClick={() => setInputValue("explore")} >
-              <NavLink to="/NFTMarketPlace">🛒 Explore Market</NavLink>
+              <NavLink to="/NFTMarketPlace">🛒 Explore</NavLink>
             </Menu.Item>
             <Menu.Item key="nft">
-              <NavLink to="/nftBalance">🖼 Your Collection</NavLink>
+              <NavLink to="/nftBalance">🖼 My Collection</NavLink>
+            </Menu.Item>
+            <Menu.Item key="mintnft">
+              <NavLink to="/MintNFT">📑 Mint NFT</NavLink>
             </Menu.Item>
             <Menu.Item key="transactions">
-              <NavLink to="/Transactions">📑 Your Transactions</NavLink>
+              <NavLink to="/Transactions">📑 Transactions</NavLink>
             </Menu.Item>
+           
           </Menu>
           <div style={styles.headerRight}>
             <Chains />
@@ -108,11 +113,14 @@ const App = ({ isServerInfo }) => {
             <Route path="/Transactions">
               <NFTMarketTransactions />
             </Route>
+            <Route path="/MintNFT">
+              <MintNFT />
+            </Route>
           </Switch>
           <Redirect to="/NFTMarketPlace" />
         </div>
       </Router>
-      <Footer style={{ textAlign: "center" }}>
+      {/* <Footer style={{ textAlign: "center" }}>
         <Text style={{ display: "block" }}>
           ⭐️ Please star this{" "}
           <a
@@ -146,14 +154,15 @@ const App = ({ isServerInfo }) => {
             Moralis
           </a>
         </Text>
-      </Footer>
+      </Footer> */}
     </Layout>
   );
 };
 
 export const Logo = () => (
   <div style={{ display: "flex" }}>
-    <svg
+    Earth.Studio
+    {/* <svg
       width="60"
       height="38"
       viewBox="0 0 50 38"
@@ -172,7 +181,7 @@ export const Logo = () => (
         d="M39.7135 25.1249C37.1094 25.1025 34.9991 27.2127 34.9766 29.8169C34.9542 32.4211 37.0645 34.5313 39.6686 34.5538C41.1503 34.5538 42.5647 33.8578 43.4626 32.6905C43.53 32.6007 43.5973 32.4884 43.6871 32.3986C45.1015 30.221 44.4729 27.3025 42.2953 25.9107C41.532 25.3943 40.634 25.1249 39.7135 25.1249Z"
         fill="#B7E803"
       />
-    </svg>
+    </svg> */}
 
   </div>
 );

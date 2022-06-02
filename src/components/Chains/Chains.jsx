@@ -22,11 +22,11 @@ const styles = {
 };
 
 const menuItems = [
-  {
-    key: "0x1",
-    value: "Ethereum",
-    icon: <ETHLogo />,
-  },
+  // {
+  //   key: "0x1",
+  //   value: "Ethereum",
+  //   icon: <ETHLogo />,
+  // },
   // {
   //   key: "0x539",
   //   value: "Local Chain",
@@ -69,7 +69,7 @@ const menuItems = [
   // },
   {
     key: "0x13881",
-    value: "Mumbai",
+    value: "Mumbai Testnet",
     icon: <PolygonLogo />,
   },
   // {

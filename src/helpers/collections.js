@@ -2,6 +2,12 @@ export const networkCollections = {
   "0x13881": [
     //Add Your Collections here
     {
+      name: "MYNFT",
+      image:
+        "https://lh3.googleusercontent.com/BWCni9INm--eqCK800BbRkL10zGyflxfPwTHt4XphMSWG3XZvPx1JyGdfU9vSor8K046DJg-Q8Y4ioUlWHiCZqgR_L00w4vcbA-w=s0",
+      addrs: '0x351bbee7c6e9268a1bf741b098448477e08a0a53'
+    },
+    {
       image:
         "https://lh3.googleusercontent.com/BWCni9INm--eqCK800BbRkL10zGyflxfPwTHt4XphMSWG3XZvPx1JyGdfU9vSor8K046DJg-Q8Y4ioUlWHiCZqgR_L00w4vcbA-w=s0",
       name: "Test Mages",

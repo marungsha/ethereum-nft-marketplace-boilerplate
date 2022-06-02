@@ -19,7 +19,7 @@ export const useNFTTokenIds = (addr) => {
   } = useMoralisWeb3ApiCall(token.getAllTokenIds, {
     chain: chainId,
     address: addr,
-    limit: 10,
+    limit: 100,
   });
 
   useEffect(async () => {
@@ -30,6 +30,7 @@ export const useNFTTokenIds = (addr) => {
       for (let NFT of NFTs) {
         if (NFT?.metadata) {
           NFT.metadata = JSON.parse(NFT.metadata);
+          console.log(NFT.metadata)
           NFT.image = resolveLink(NFT.metadata?.image);
         } else if (NFT?.token_uri) {
           try {
