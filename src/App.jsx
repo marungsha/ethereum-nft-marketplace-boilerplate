@@ -11,14 +11,14 @@ import Account from "components/Account";
 import Chains from "components/Chains";
 import NFTBalance from "components/NFTBalance";
 import NFTTokenIds from "components/NFTTokenIds";
-import { Menu, Layout} from "antd";
+import { Menu, Layout, Typography, Button, Image} from "antd";
 import SearchCollections from "components/SearchCollections";
 import "antd/dist/antd.css";
 import NativeBalance from "components/NativeBalance";
 import "./style.css";
-import Text from "antd/lib/typography/Text";
 import NFTMarketTransactions from "components/NFTMarketTransactions";
 import MintNFT from "components/NFTMint";
+import { Link } from "react-router-dom";
 const { Header, Footer } = Layout;
 
 const styles = {
@@ -51,15 +51,17 @@ const styles = {
     fontWeight: "600",
   },
 };
+const NFT_CONTRACT_ADDRESS = process.env.REACT_APP_NFT_CONTRACT_ADDRESS;
+
 const App = ({ isServerInfo }) => {
-  const { isWeb3Enabled, enableWeb3, isAuthenticated, isWeb3EnableLoading } =
+  const { authenticate, isWeb3Enabled, enableWeb3, isAuthenticated, isWeb3EnableLoading } =
     useMoralis();
 
-
-
-  const [inputValue, setInputValue] = useState("explore");
+  const [inputValue, setInputValue] = useState(NFT_CONTRACT_ADDRESS);
+  
 
   useEffect(() => {
+    console.log(isAuthenticated, isWeb3Enabled)
     if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading) enableWeb3();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isWeb3Enabled]);
@@ -69,7 +71,7 @@ const App = ({ isServerInfo }) => {
       <Router>
         <Header style={styles.header}>
           <Logo />
-          <SearchCollections setInputValue={setInputValue}/>
+          {/* <SearchCollections setInputValue={setInputValue}/> */}
           <Menu
             theme="light"
             mode="horizontal"
@@ -82,7 +84,7 @@ const App = ({ isServerInfo }) => {
             }}
             defaultSelectedKeys={["nftMarket"]}
           >
-            <Menu.Item key="nftMarket" onClick={() => setInputValue("explore")} >
+            <Menu.Item key="nftMarket" onClick={() => setInputValue(NFT_CONTRACT_ADDRESS)} >
               <NavLink to="/NFTMarketPlace">🛒 Explore</NavLink>
             </Menu.Item>
             <Menu.Item key="nft">
@@ -103,21 +105,29 @@ const App = ({ isServerInfo }) => {
           </div>
         </Header>
         <div style={styles.content}>
-          <Switch>
-            <Route path="/nftBalance">
-              <NFTBalance />
-            </Route>
-            <Route path="/NFTMarketPlace">
-              <NFTTokenIds inputValue={inputValue} setInputValue={setInputValue}/>
-            </Route>
-            <Route path="/Transactions">
-              <NFTMarketTransactions />
-            </Route>
-            <Route path="/MintNFT">
-              <MintNFT />
-            </Route>
-          </Switch>
-          <Redirect to="/NFTMarketPlace" />
+          {isAuthenticated? <> 
+            <Switch>
+              <Route path="/nftBalance">
+                <NFTBalance />
+              </Route>
+              <Route path="/NFTMarketPlace">
+                <NFTTokenIds inputValue={inputValue} setInputValue={setInputValue}/>
+              </Route>
+              <Route path="/Transactions">
+                <NFTMarketTransactions />
+              </Route>
+              <Route path="/MintNFT">
+                <MintNFT />
+              </Route>
+            </Switch>
+            <Redirect to="/NFTMarketPlace" />
+          </>: <>
+            <div style={{textAlign: 'center'}}>
+              <Typography.Text>Please login using METAMASK to continue..</Typography.Text>
+              <br/>
+              <Button type="link" onClick={() => authenticate({ signingMessage: "Hello World!" })}><Image width={100} src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" preview={false}/></Button>
+            </div>
+          </>}
         </div>
       </Router>
       {/* <Footer style={{ textAlign: "center" }}>
@@ -161,7 +171,7 @@ const App = ({ isServerInfo }) => {
 
 export const Logo = () => (
   <div style={{ display: "flex" }}>
-    Earth.Studio
+    <Link to={"/NFTMarketPlace"}>Earth.Studio</Link>
     {/* <svg
       width="60"
       height="38"

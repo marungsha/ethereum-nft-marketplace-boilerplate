@@ -8,8 +8,6 @@ function SearchCollections({setInputValue}){
     const { chainId } = useMoralisDapp();
     const NFTCollections = getCollectionsByChain(chainId);
     
-    
-
     function onChange(value) {
         setInputValue(value);
     }

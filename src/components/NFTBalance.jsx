@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useMoralis } from "react-moralis";
-import { Card, Image, Tooltip, Modal, Input, Alert, Spin, Button } from "antd";
+import { Card, Image, Tooltip, Modal, Input, Alert, Spin, Button, Typography } from "antd";
 import { useNFTBalance } from "hooks/useNFTBalance";
 import { FileSearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useMoralisDapp } from "providers/MoralisDappProvider/MoralisDappProvider";
@@ -8,6 +8,7 @@ import { getExplorer } from "helpers/networks";
 import { useWeb3ExecuteFunction } from "react-moralis";
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
+import Loading from "./Loading";
 const { Meta } = Card;
 
 const styles = {
@@ -23,21 +24,25 @@ const styles = {
 };
 
 function NFTBalance() {
-  const { NFTBalance, fetchSuccess } = useNFTBalance();
+  const { NFTBalance, fetchSuccess, isLoading } = useNFTBalance();
   const { chainId, marketAddress, contractABI } = useMoralisDapp();
   const { Moralis } = useMoralis();
   const [visible, setVisibility] = useState(false);
   const [nftToSend, setNftToSend] = useState(null);
   const [price, setPrice] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const contractProcessor = useWeb3ExecuteFunction();
   const contractABIJson = JSON.parse(contractABI);
   const listItemFunction = "createMarketItem";
   const ItemImage = Moralis.Object.extend("ItemImages");
 
   useEffect(() => {
-    console.log(NFTBalance)
-  }, [NFTBalance])
+    console.log(NFTBalance, marketAddress)
+  }, [marketAddress])
+
+  useEffect(() => {
+    setLoading(isLoading)
+  }, [isLoading])
 
   async function list(nft, listPrice) {
     setLoading(true);
@@ -52,6 +57,8 @@ function NFTBalance() {
         price: String(p),
       },
     };
+
+    console.log(ops)
 
     await contractProcessor.fetch({
       params: ops,
@@ -87,7 +94,7 @@ function NFTBalance() {
       onSuccess: () => {
         console.log("Approval Received");
         setLoading(false);
-        setVisibility(false);
+        // setVisibility(false);
         succApprove();
       },
       onError: (error) => {
@@ -178,6 +185,7 @@ function NFTBalance() {
             <div style={{ marginBottom: "10px" }}></div>
           </>
         )}
+        {loading && <Loading message="Loading my collection...."/>}
         {NFTBalance &&
           NFTBalance.map((nft, index) => (
             <Card
@@ -209,7 +217,8 @@ function NFTBalance() {
               }
               key={index}
             >
-              <Meta title={nft.metadata && nft.metadata.name?nft.metadata.name:nft.name} description={nft.contract_type} />
+              <Typography.Title style={{fontSize: '90%', opacity: 0.7}}>{nft.name}</Typography.Title>
+              <Meta title={nft.metadata && nft.metadata.name?nft.metadata.name:''} description={nft.contract_type} />
               {nft.metadata && nft.metadata.audio && <AudioPlayer style={{marginTop: 10}}
                 src={nft.metadata.audio}
                 showSkipControls={false}

@@ -185,7 +185,7 @@ function MoralisDappProvider({ children }) {
       "type": "function"
     }
   ]`); //Smart Contract ABI here
-  const [marketAddress, setMarketAddress] = useState('0x108f4f99ff8547b10946beef2c29cd75c8328bc6'); //Smart Contract Address Here
+  const [marketAddress, setMarketAddress] = useState('0xc679cefbc0587793834dd97341080c57b372ab12'); //Smart Contract Address Here
 
 
   useEffect(() => {

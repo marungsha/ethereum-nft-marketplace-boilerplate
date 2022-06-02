@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMoralis } from "react-moralis";
-import { Modal, Input, Alert, Spin, Button, Typography } from "antd";
+import { Modal, Input, Alert, Spin, Button, Typography, Divider } from "antd";
 import IPFSUpload from "./IPFSUpload";
 
 const styles = {
@@ -15,12 +15,16 @@ const styles = {
   },
 };
 
-const NFTContractAddress = process.env.NFT_CONTRACT_ADDRESS // '0x351bbee7C6E9268A1BF741B098448477E08A0a53'
+const NFTContractAddress = process.env.REACT_APP_NFT_CONTRACT_ADDRESS 
+// '0x3DcC01c7b7A55498DAB041A9130cA418703F16F4' // process.env.REACT_APP_NFT_CONTRACT_ADDRESS // 
 
 function NFTMint() {
     const { Moralis } = useMoralis();
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState([])
+
+    const [metaDataUri, setMetaDataUri] = useState(null)
+
 
 
     const [NFT, setNFT] = useState({
@@ -33,18 +37,20 @@ function NFTMint() {
 
     const [mintSuccess, setMintSuccess] = useState(true)
 
+    useEffect(() => {
+      console.log(NFTContractAddress , process.env)
+    }, [])
+
     function updateNFTFile(key, uri){
         setNFT({...NFT, [key]: uri })
-        // if(key=='audio') {
-        //     let audio = NFT.attributes.find(v => v.trait_type=='audio')
-        //     if(audio) audio.value = uri
-        //     else NFT.attributes.push({trait_type: 'audio', value: uri })
-        // }
     }
 
     async function mintNFT(){
-        //validate 
-        console.log(NFT)
+        // validate 
+        // console.log(NFT)
+        if(metaDataUri){
+          return executeMint(metaDataUri)
+        }
         var errors = []
         if(!NFT.name){
             errors.push('Name field is required!')
@@ -64,12 +70,27 @@ function NFTMint() {
             return
         }
 
-        console.log("Start minting")
-        const metadataFile = new Moralis.File("metadata.json", {base64 : btoa(JSON.stringify(NFT))});
-        await metadataFile.saveIPFS();
-        const metadataURI = metadataFile.ipfs();
-        const txt = await mintToken(metadataURI).then(notify)
+        console.log("Start minting - ")
+        if(!metaDataUri){
+          const metadataFile = new Moralis.File("metadata.json", {base64 : btoa(JSON.stringify(NFT))});
+          await metadataFile.saveIPFS();
+          const _metadataURI = metadataFile.ipfs();
+          setMetaDataUri(_metadataURI)
+          executeMint(_metadataURI)
+        } else {
+          executeMint(metaDataUri)
+        }
+        console.log(metaDataUri)
+       
+        // const txt = await mintToken('https://ipfs.moralis.io:2053/ipfs/QmVhxmrFSBgeeMUECdW3HuntGtAdpNme1ap2HzC6oq4yb4').then(notify)
 
+    }
+
+    async function executeMint(uri){
+      const txt = await mintToken(uri).then(notify)
+      .catch(e => {
+        console.log(e)
+      })
     }
 
     async function mintToken(_uri){
@@ -88,6 +109,8 @@ function NFTMint() {
           from: window.ethereum.selectedAddress,
           data: encodedFunction
         };
+
+        console.log(transactionParameters)
         const txt = await window.ethereum.request({
           method: 'eth_sendTransaction',
           params: [transactionParameters]
@@ -100,7 +123,7 @@ function NFTMint() {
         console.log('Transaction address '+_tx)
         setLoading(false)
         alert('Transaction address '+_tx)
-        window.location.href = '/nftBalance'
+        // window.location.href = '/nftBalance'
     }
 
 
@@ -139,8 +162,20 @@ function NFTMint() {
             />
         <IPFSUpload updateLoading={setLoading} name={'image'} accept={'image/*'} uploadText="Click to upload image file" setUploadURI={(uri) => updateNFTFile('image',uri )} />
         <IPFSUpload updateLoading={setLoading} name={'audio'} accept={'audio/*'} uploadText="Click to upload audio file" setUploadURI={(uri) => updateNFTFile('audio', uri)} />
-        
-        <Button block color="blue" onClick={mintNFT}>MINT NFT</Button>
+        {/* <div>
+          <Divider />
+          <p>Or</p>
+        </div>
+        <Input
+            size="large"
+            placeholder={'MetaData URI'}
+            value={metaDataUri}
+            onChange={(e) => {
+                setMetaDataUri(e.target.value);
+            }}
+            required
+            /> */}
+        <Button block type="primary" size="large" style={{marginTop: 20}} onClick={mintNFT}>MINT NFT</Button>
       </div>
 
       <Modal
