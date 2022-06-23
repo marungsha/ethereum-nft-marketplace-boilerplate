@@ -1,0 +1,19 @@
+.home-col{
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.ant-layout{
+    background: white;
+}
+
+.explore-btn{
+    margin: 40px;
+    padding: 30px 40px;
+    align-items: center;
+    display: flex;
+    font-size: 20px;
+}

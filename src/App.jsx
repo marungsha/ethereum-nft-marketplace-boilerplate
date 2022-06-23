@@ -188,7 +188,7 @@ const App = ({ isServerInfo }) => {
 
 export const Logo = () => (
   <div style={{ display: "flex" }}>
-    <Link to={"/"}><b>EARTH.STUDIO</b></Link>
+    <Link to={"/"}><b>EARTH&nbsp;STUDIO</b></Link>
     {/* <svg
       width="60"
       height="38"
