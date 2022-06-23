@@ -9,7 +9,7 @@ function Home() {
         <div>
             <div id = 'main'>
                 <nav>
-                <NavLink to= 'main' classname ='logo'>
+                <NavLink to= '/' classname ='logo'>
                         <img src = {logo} alt ='logo'/>
                         </NavLink>
                         <input className= 'menu-btn' type= 'checkbox' id='menu-btn'/>
@@ -17,7 +17,7 @@ function Home() {
                         <span className= 'nav-icon'> </span>
                             </label> 
                             <ul classname='menu'>
-                                <li><NavLink to='/' className='active'>Home</NavLink></li>
+                                {/* <li><NavLink to='/' className='active'>Home</NavLink></li> */}
                                 <li><NavLink to='/NFTMarketPlace' >Explore</NavLink></li>
                                 <li><NavLink to='/MintNFT' >Mint NFTs</NavLink></li>
                                 <li><NavLink to='#MintNFT' onClick={() => {alert('Coming soon!')}}>Contact Us</NavLink></li>
