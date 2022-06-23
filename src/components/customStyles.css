@@ -1,0 +1,29 @@
+.ant-image{
+    text-align: center;
+    text-align: -webkit-center;
+    vertical-align: middle;
+}
+.nft-holder{
+    padding-bottom: 100px;
+}
+.audio-lists-panel-header-title{
+    color: white;
+}
+@media (max-width: 480px) {
+    .nft-holder .ant-card-cover{
+        padding: 15px;
+    }
+    .nft-holder .ant-card-body{
+        padding: 0 !important;
+        padding-bottom: 15px !important;
+    }
+    .nft-holder .ant-card-actions{
+        margin: 0px 60px;
+    }
+    .ant-card-meta-detail{
+        text-align: center;
+    }
+    .chainSelect{
+        display: none;
+    }
+}

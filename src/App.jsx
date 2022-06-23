@@ -6,6 +6,7 @@ import {
   Route,
   NavLink,
   Redirect,
+  useLocation,
 } from "react-router-dom";
 import Account from "components/Account";
 import Chains from "components/Chains";
@@ -18,6 +19,7 @@ import NativeBalance from "components/NativeBalance";
 import "./style.css";
 import NFTMarketTransactions from "components/NFTMarketTransactions";
 import MintNFT from "components/NFTMint";
+import Home from "components/Home";
 import { Link } from "react-router-dom";
 const { Header, Footer } = Layout;
 
@@ -57,6 +59,8 @@ const App = ({ isServerInfo }) => {
   const { authenticate, isWeb3Enabled, enableWeb3, isAuthenticated, isWeb3EnableLoading } =
     useMoralis();
 
+  // const slocation = useLocation()
+
   const [inputValue, setInputValue] = useState(NFT_CONTRACT_ADDRESS);
   
 
@@ -69,67 +73,80 @@ const App = ({ isServerInfo }) => {
   return (
     <Layout style={{ height: "100vh", overflow: "auto" }}>
       <Router>
-        <Header style={styles.header}>
-          <Logo />
-          {/* <SearchCollections setInputValue={setInputValue}/> */}
-          <Menu
-            theme="light"
-            mode="horizontal"
-            style={{
-              display: "flex",
-              fontSize: "17px",
-              fontWeight: "500",
-              marginLeft: "50px",
-              width: "100%",
-            }}
-            defaultSelectedKeys={["nftMarket"]}
-          >
-            <Menu.Item key="nftMarket" onClick={() => setInputValue(NFT_CONTRACT_ADDRESS)} >
-              <NavLink to="/NFTMarketPlace">🛒 Explore</NavLink>
-            </Menu.Item>
-            <Menu.Item key="nft">
-              <NavLink to="/nftBalance">🖼 My Collection</NavLink>
-            </Menu.Item>
-            <Menu.Item key="mintnft">
-              <NavLink to="/MintNFT">📑 Mint NFT</NavLink>
-            </Menu.Item>
-            <Menu.Item key="transactions">
-              <NavLink to="/Transactions">📑 Transactions</NavLink>
-            </Menu.Item>
-           
-          </Menu>
-          <div style={styles.headerRight}>
-            <Chains />
-            <NativeBalance />
-            <Account />
-          </div>
-        </Header>
-        <div style={styles.content}>
-          {isAuthenticated? <> 
-            <Switch>
-              <Route path="/nftBalance">
-                <NFTBalance />
-              </Route>
-              <Route path="/NFTMarketPlace">
-                <NFTTokenIds inputValue={inputValue} setInputValue={setInputValue}/>
-              </Route>
-              <Route path="/Transactions">
-                <NFTMarketTransactions />
-              </Route>
-              <Route path="/MintNFT">
-                <MintNFT />
-              </Route>
-            </Switch>
-            <Redirect to="/NFTMarketPlace" />
-          </>: <>
-            <div style={{textAlign: 'center'}}>
-              <Typography.Text>Please login using METAMASK to continue..</Typography.Text>
-              <br/>
-              <Button type="link" onClick={() => authenticate({ signingMessage: "Hello World!" })}><Image width={100} src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" preview={false}/></Button>
+        <Switch>
+          <Route path="/" exact><Home /></Route>
+          <Route path={'/'}>
+            <>
+              <Header style={styles.header}>
+                <Logo />
+                <Menu
+                  theme="light"
+                  mode="horizontal"
+                  style={{
+                    display: "flex",
+                    fontSize: "17px",
+                    fontWeight: "500",
+                    marginLeft: "50px",
+                    width: "100%",
+                  }}
+                  defaultSelectedKeys={["nftMarket"]}
+                >
+                <Menu.Item key="nftMarket" onClick={() => setInputValue(NFT_CONTRACT_ADDRESS)} >
+                  <NavLink to="/NFTMarketPlace">🛒 Explore</NavLink>
+                </Menu.Item>
+                <Menu.Item key="nft">
+                  <NavLink to="/nftBalance">🖼 My Collection</NavLink>
+                </Menu.Item>
+                <Menu.Item key="mintnft">
+                  <NavLink to="/MintNFT">📑 Mint NFT</NavLink>
+                </Menu.Item>
+                <Menu.Item key="transactions">
+                  <NavLink to="/Transactions">📑 Transactions</NavLink>
+                </Menu.Item>
+              </Menu>
+              <div style={styles.headerRight}>
+                <Chains />
+                <NativeBalance />
+                <Account />
+              </div>
+            </Header>
+            <div style={styles.content}>
+              
+                {isAuthenticated? <> 
+                  <Switch>
+                    <Route path="/nftBalance">
+                      <NFTBalance />
+                    </Route>
+                    <Route path="/NFTMarketPlace">
+                      <NFTTokenIds inputValue={inputValue} setInputValue={setInputValue}/>
+                    </Route>
+                    <Route path="/Transactions">
+                      <NFTMarketTransactions />
+                    </Route>
+                    <Route path="/MintNFT">
+                      <MintNFT />
+                    </Route>
+                  </Switch>
+                  {/* <Redirect to="/home" /> */}
+                </>: <>
+                  <div style={{textAlign: 'center'}}>
+                    <Typography.Text>Please login using METAMASK to continue..</Typography.Text>
+                    <br/>
+                    <Button type="link" onClick={() => authenticate({ signingMessage: "Hello World!" })}><Image width={100} src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" preview={false}/></Button>
+                    <p style={{position: 'absolute', bottom: 10, left: 0, width: '100vw', textAlign: 'center'}}>Please use only desktop browser at the moment.</p>
+                  </div>
+                </>}
+              
             </div>
-          </>}
-        </div>
+            </>
+
+          </Route>
+        </Switch>
+        
+        
       </Router>
+
+      
       {/* <Footer style={{ textAlign: "center" }}>
         <Text style={{ display: "block" }}>
           ⭐️ Please star this{" "}
@@ -171,7 +188,7 @@ const App = ({ isServerInfo }) => {
 
 export const Logo = () => (
   <div style={{ display: "flex" }}>
-    <Link to={"/NFTMarketPlace"}>Earth.Studio</Link>
+    <Link to={"/"}><b>EARTH.STUDIO</b></Link>
     {/* <svg
       width="60"
       height="38"

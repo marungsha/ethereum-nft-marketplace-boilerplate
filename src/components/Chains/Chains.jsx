@@ -107,7 +107,7 @@ function Chains() {
   );
 
   return (
-    <div>
+    <div className="chainSelect">
       <Dropdown overlay={menu} trigger={["click"]}>
         <Button
           key={selected?.key}
