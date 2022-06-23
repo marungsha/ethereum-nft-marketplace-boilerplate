@@ -17,7 +17,7 @@ function Home() {
                         <span className= 'nav-icon'> </span>
                             </label> 
                             <ul classname='menu'>
-                                <li><NavLink to='main' className='active'>Home</NavLink></li>
+                                <li><NavLink to='/' className='active'>Home</NavLink></li>
                                 <li><NavLink to='/NFTMarketPlace' >Explore</NavLink></li>
                                 <li><NavLink to='/MintNFT' >Mint NFTs</NavLink></li>
                                 <li><NavLink to='#MintNFT' onClick={() => {alert('Coming soon!')}}>Contact Us</NavLink></li>
