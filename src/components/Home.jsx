@@ -11,8 +11,8 @@ function Home() {
         <div>
             <Row>
                 <Col md={9} className="home-col">
-                    <Typography.Title>EARTH STUDIO</Typography.Title>
-                    <h3>Join the next big music revolution</h3>
+                    <Typography.Title style={{fontSize: 48}}><span style={{color: 'aquamarine'}}>EARTH</span> <span style={{color: 'slategrey'}}>STUDIO</span></Typography.Title>
+                    <h3>Orchestrate the next big music revolution</h3>
                     <NavLink to="/NFTMarketPlace">
                         <Button className="explore-btn" > EXPLORE</Button>
                     </NavLink>
