@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "goldvault-1a7d6"
+  },
+  "targets": {
+    "goldvault-1a7d6": {
+      "hosting": {
+        "earthstudio": [
+          "earthstudio"
+        ]
+      }
+    }
+  }
+}
