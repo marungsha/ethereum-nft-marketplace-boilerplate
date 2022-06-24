@@ -19,6 +19,7 @@ import NativeBalance from "components/NativeBalance";
 import "./style.css";
 import NFTMarketTransactions from "components/NFTMarketTransactions";
 import MintNFT from "components/NFTMint";
+import Collaborate from "components/Collaborate";
 import Home from "components/Home";
 import { Link } from "react-router-dom";
 const { Header, Footer } = Layout;
@@ -92,16 +93,19 @@ const App = ({ isServerInfo }) => {
                   defaultSelectedKeys={["nftMarket"]}
                 >
                 <Menu.Item key="nftMarket" onClick={() => setInputValue(NFT_CONTRACT_ADDRESS)} >
-                  <NavLink to="/NFTMarketPlace">🛒 Explore</NavLink>
+                  <NavLink to="/NFTMarketPlace"> Explore</NavLink>
                 </Menu.Item>
                 <Menu.Item key="nft">
-                  <NavLink to="/nftBalance">🖼 My Collection</NavLink>
+                  <NavLink to="/nftBalance"> My Collection</NavLink>
                 </Menu.Item>
                 <Menu.Item key="mintnft">
-                  <NavLink to="/MintNFT">📑 Mint NFT</NavLink>
+                  <NavLink to="/MintNFT"> Mint NFT</NavLink>
                 </Menu.Item>
                 <Menu.Item key="transactions">
-                  <NavLink to="/Transactions">📑 Transactions</NavLink>
+                  <NavLink to="/Transactions"> Transactions</NavLink>
+                </Menu.Item>
+                <Menu.Item key="collaborate">
+                  <NavLink to="/collaborate"> Collaborate</NavLink>
                 </Menu.Item>
               </Menu>
               <div style={styles.headerRight}>
@@ -126,6 +130,10 @@ const App = ({ isServerInfo }) => {
                     <Route path="/MintNFT">
                       <MintNFT />
                     </Route>
+                    <Route path="/collaborate">
+                      <Collaborate />
+                    </Route>
+                    
                   </Switch>
                   {/* <Redirect to="/home" /> */}
                 </>: <>

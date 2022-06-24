@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useMoralis } from "react-moralis";
-import { Modal, Input, Alert, Spin, Button, Typography, Divider } from "antd";
+import { Modal, Input, Alert, Spin, Button, Typography, Divider, message } from "antd";
 import IPFSUpload from "./IPFSUpload";
 
 const styles = {
@@ -48,6 +48,7 @@ function NFTMint() {
     async function mintNFT(){
         // validate 
         // console.log(NFT)
+        
         if(metaDataUri){
           return executeMint(metaDataUri)
         }
@@ -71,12 +72,19 @@ function NFTMint() {
         }
 
         console.log("Start minting - ")
+        setLoading(true)
+
         if(!metaDataUri){
           const metadataFile = new Moralis.File("metadata.json", {base64 : btoa(JSON.stringify(NFT))});
-          await metadataFile.saveIPFS();
-          const _metadataURI = metadataFile.ipfs();
-          setMetaDataUri(_metadataURI)
-          executeMint(_metadataURI)
+          try{
+            await metadataFile.saveIPFS();
+            const _metadataURI = metadataFile.ipfs();
+            setMetaDataUri(_metadataURI)
+            executeMint(_metadataURI)
+          } catch(e){
+            console.log(e)
+            message.error("Meta data save failed: "+e.message)
+          }
         } else {
           executeMint(metaDataUri)
         }
@@ -90,6 +98,10 @@ function NFTMint() {
       const txt = await mintToken(uri).then(notify)
       .catch(e => {
         console.log(e)
+        message.error(`${e.message}. Mint process failed.`);
+      })
+      .finally(() => {
+        setLoading(false)
       })
     }
 
@@ -122,7 +134,7 @@ function NFTMint() {
     async function notify(_tx){
         console.log('Transaction address '+_tx)
         setLoading(false)
-        alert('Transaction address '+_tx)
+        alert('Mint Success: Transaction address '+_tx)
         // window.location.href = '/nftBalance'
     }
 

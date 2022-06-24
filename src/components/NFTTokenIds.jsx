@@ -109,14 +109,17 @@ function NFTTokenIds({ inputValue, setInputValue }) {
   useEffect(() => {
     console.log()
     if(Array.isArray(NFTTokenIds))
-      setAudioList((NFTTokenIds || []).map(token => {
+    console.log(NFTTokenIds)
+      setAudioList((NFTTokenIds || []).filter(token => token.metadata).map(token => {
         console.log(token)
         let meta = token.metadata
-        return {
-          name: meta.name,
-          musicSrc: meta.audio,
-          cover: meta.image
-        }
+        if(meta)
+          return {
+            name: meta.name,
+            musicSrc: meta.audio,
+            cover: meta.image
+          }
+        else return { }
       }))
   }, [NFTTokenIds]);
 
@@ -216,7 +219,7 @@ function NFTTokenIds({ inputValue, setInputValue }) {
         )}
         {inputValue !== "explore" && totalNFTs !== undefined && (
           <>
-            {!fetchSuccess && (
+            {/* {!fetchSuccess && (
               <>
                 <Alert
                   message="Unable to fetch all NFT metadata... We are searching for a solution, please try again later!"
@@ -224,7 +227,7 @@ function NFTTokenIds({ inputValue, setInputValue }) {
                 />
                 <div style={{ marginBottom: "10px" }}></div>
               </>
-            )}
+            )} */}
             <div style={styles.banner}>
               <Image
                 preview={false}
@@ -321,7 +324,7 @@ function NFTTokenIds({ inputValue, setInputValue }) {
           {inputValue !== "explore" &&
           // .slice(0, 20)
             
-            NFTTokenIds.map((nft, index) => (
+            NFTTokenIds.filter(nft => nft.metadata).map((nft, index) => (
                 <Col xs={24} sm={12} md={6} key={index}>
                 <Card
                     hoverable
@@ -370,7 +373,7 @@ function NFTTokenIds({ inputValue, setInputValue }) {
                     {getMarketItem(nft) && (
                       <Badge.Ribbon text="Buy Now" color="green"></Badge.Ribbon>
                     )}
-                    <Meta title={nft.metadata && nft.metadata.name? nft.metadata.name : nft.name} description={`#${nft.token_id}`} />
+                    <Meta title={nft.metadata && nft.metadata.name? nft.metadata.name : nft.name} description={`#${nft.metadata?nft.metadata.description:''}`} />
                     {/* {nft.metadata && nft.metadata.audio && <AudioPlayer style={{marginTop: 10}}
                       src={nft.metadata.audio}
                       showSkipControls={false}

@@ -187,7 +187,7 @@ function NFTBalance() {
         )}
         {loading && <Loading message="Loading my collection...."/>}
         {NFTBalance &&
-          NFTBalance.map((nft, index) => (
+          NFTBalance.filter(nft => nft.metadata).map((nft, index) => (
             <Card
               hoverable
               actions={[
@@ -218,7 +218,7 @@ function NFTBalance() {
               key={index}
             >
               <Typography.Title style={{fontSize: '90%', opacity: 0.7}}>{nft.name}</Typography.Title>
-              <Meta title={nft.metadata && nft.metadata.name?nft.metadata.name:''} description={nft.contract_type} />
+              <Meta title={nft.metadata && nft.metadata.name?nft.metadata.name:''} description={`#${nft.metadata?nft.metadata.description:''}`} />
               {nft.metadata && nft.metadata.audio && <AudioPlayer style={{marginTop: 10}}
                 src={nft.metadata.audio}
                 showSkipControls={false}
