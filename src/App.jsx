@@ -21,6 +21,7 @@ import NFTMarketTransactions from "components/NFTMarketTransactions";
 import MintNFT from "components/NFTMint";
 import Collaborate from "components/Collaborate";
 import Home from "components/Home";
+import TruSound from "components/TruSound";
 import { Link } from "react-router-dom";
 const { Header, Footer } = Layout;
 
@@ -54,7 +55,7 @@ const styles = {
     fontWeight: "600",
   },
 };
-const NFT_CONTRACT_ADDRESS = process.env.REACT_APP_NFT_CONTRACT_ADDRESS;
+const NFT_CONTRACT_ADDRESS = process.env.REACT_APP_NFT_CONTRACT_ADDRESS || '0x7EBAEF640cD65cf43568a8516f6a5Eec217fBCEf';
 
 const App = ({ isServerInfo }) => {
   const { authenticate, isWeb3Enabled, enableWeb3, isAuthenticated, isWeb3EnableLoading } =
@@ -76,6 +77,7 @@ const App = ({ isServerInfo }) => {
       <Router>
         <Switch>
           <Route path="/" exact><Home /></Route>
+          <Route path="/true-sound" exact><TruSound /></Route>
           <Route path={'/'}>
             <>
               <Header style={styles.header}>
@@ -105,7 +107,7 @@ const App = ({ isServerInfo }) => {
                   <NavLink to="/Transactions"> Transactions</NavLink>
                 </Menu.Item>
                 <Menu.Item key="collaborate">
-                  <NavLink to="/collaborate"> Collaborate</NavLink>
+                  <NavLink to="/collaborate" > Collaborate</NavLink>
                 </Menu.Item>
               </Menu>
               <div style={styles.headerRight}>
@@ -131,18 +133,28 @@ const App = ({ isServerInfo }) => {
                       <MintNFT />
                     </Route>
                     <Route path="/collaborate">
-                      <Collaborate />
+                      <Collaborate inputValue={inputValue} setInputValue={setInputValue}/>
                     </Route>
-                    
                   </Switch>
                   {/* <Redirect to="/home" /> */}
                 </>: <>
-                  <div style={{textAlign: 'center'}}>
-                    <Typography.Text>Please login using METAMASK to continue..</Typography.Text>
-                    <br/>
-                    <Button type="link" onClick={() => authenticate({ signingMessage: "Hello World!" })}><Image width={100} src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" preview={false}/></Button>
-                    <p style={{position: 'absolute', bottom: 10, left: 0, width: '100vw', textAlign: 'center'}}>Please use only desktop browser at the moment.</p>
-                  </div>
+                  <Switch>
+                    <Route path="/NFTMarketPlace">
+                      <NFTTokenIds inputValue={inputValue} setInputValue={setInputValue}/>
+                    </Route>
+                    <Route path="/">
+                      <div style={{textAlign: 'center'}}>
+                        <Typography.Text>Please login using METAMASK (Polygon Mainnet) to continue..</Typography.Text>
+                        <div style={{marginTop: 20}}><a href="https://levelup.gitconnected.com/how-to-use-metamask-a-step-by-step-guide-f380a3943fb1" target={"_blank"}>Learn how to use Metamask here.</a></div>
+                        <br/>
+                        <Button type="link" onClick={() => authenticate({ signingMessage: "Hello World!" })}><Image width={100} src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" preview={false}/></Button>
+                        <p style={{position: 'absolute', bottom: 10, left: 0, width: '100vw', textAlign: 'center'}}>
+                          Please use only desktop browser at the moment.
+                          <br/>
+                        </p>
+                      </div>  
+                    </Route>
+                  </Switch>
                 </>}
               
             </div>

@@ -33,26 +33,26 @@ export const useNFTBalance = (options) => {
               });
           } catch (error) {
             setFetchSuccess(false);
-
-/*          !!Temporary work around to avoid CORS issues when retrieving NFT images!!
+          /*          
+            !!Temporary work around to avoid CORS issues when retrieving NFT images!!
             Create a proxy server as per https://dev.to/terieyenike/how-to-create-a-proxy-server-on-heroku-5b5c
             Replace <your url here> with your proxy server_url below
             Remove comments :)
 
-              try {
-                await fetch(`<your url here>/${NFT.token_uri}`)
-                .then(response => response.json())
-                .then(data => {
-                  NFT.image = resolveLink(data.image);
-                });
-              } catch (error) {
-                setFetchSuccess(false);
-              }
-
- */
+            try {
+              await fetch(`<your url here>/${NFT.token_uri}`)
+              .then(response => response.json())
+              .then(data => {
+                NFT.image = resolveLink(data.image);
+              });
+            } catch (error) {
+              setFetchSuccess(false);
+            }
+          */
           }
         }
       }
+      console.log(NFTs)
       setNFTBalance(NFTs);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

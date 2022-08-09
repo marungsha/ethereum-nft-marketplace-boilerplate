@@ -30,7 +30,7 @@ export const useNFTTokenIds = (addr) => {
       for (let NFT of NFTs) {
         if (NFT?.metadata) {
           NFT.metadata = JSON.parse(NFT.metadata);
-          console.log(NFT.metadata)
+          // console.log(NFT.metadata)
           NFT.image = resolveLink(NFT.metadata?.image);
         } else if (NFT?.token_uri) {
           try {
@@ -61,7 +61,8 @@ export const useNFTTokenIds = (addr) => {
           }
         }
       }
-      setNFTTokenIds(NFTs);
+
+      setNFTTokenIds(NFTs.filter(v => v.block_number_minted !== "29941268"));
     }
   }, [data]);
 

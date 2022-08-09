@@ -73,7 +73,7 @@ export const networkConfigs = {
 export const getNativeByChain = (chain) =>
   networkConfigs[chain]?.currencySymbol || "NATIVE";
 
-export const getChainById = (chain) => networkConfigs[chain]?.chainId || null;
+export const getChainById = (chain) => networkConfigs[chain]?.chainId || 137; // null
 
 export const getExplorer = (chain) => networkConfigs[chain]?.blockExplorerUrl;
 

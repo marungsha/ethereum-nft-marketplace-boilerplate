@@ -9,6 +9,14 @@
 .audio-lists-panel-header-title{
     color: white;
 }
+.true-sound *{
+    color: white !important;
+}
+@media (min-width: 720px) {
+    .nft-holder{
+        min-width: 1000px;
+    }
+}
 @media (max-width: 480px) {
     .nft-holder .ant-card-cover{
         padding: 15px;

@@ -61,9 +61,10 @@ function NFTMint() {
             errors.push('Image is required!')
         }
 
-        if(!NFT.audio){
-            errors.push('Audio is required!')
-        }
+        // Optional
+        // if(!NFT.audio){
+        //     errors.push('Audio is required!')
+        // }
 
         if(errors.length>0){
             setErrors(errors)
@@ -89,7 +90,6 @@ function NFTMint() {
           executeMint(metaDataUri)
         }
         console.log(metaDataUri)
-       
         // const txt = await mintToken('https://ipfs.moralis.io:2053/ipfs/QmVhxmrFSBgeeMUECdW3HuntGtAdpNme1ap2HzC6oq4yb4').then(notify)
 
     }

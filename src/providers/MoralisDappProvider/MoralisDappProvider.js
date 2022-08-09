@@ -5,7 +5,7 @@ import MoralisDappContext from "./context";
 function MoralisDappProvider({ children }) {
   const { web3, Moralis, user } = useMoralis();
   const [walletAddress, setWalletAddress] = useState();
-  const [chainId, setChainId] = useState('0x13881');       
+  const [chainId, setChainId] = useState('0x89');       
   const [contractABI, setContractABI] = useState(`[
     {
       "inputs": [],
@@ -185,12 +185,14 @@ function MoralisDappProvider({ children }) {
       "type": "function"
     }
   ]`); //Smart Contract ABI here
-  const [marketAddress, setMarketAddress] = useState('0xc679cefbc0587793834dd97341080c57b372ab12'); //Smart Contract Address Here
-
+  const [marketAddress, setMarketAddress] = useState('0xd59344e99766304705f9ed7797cbe95f03d6709a'); //Smart Contract Address Here
+  // '0xc679cefbc0587793834dd97341080c57b372ab12'
 
   useEffect(() => {
     Moralis.onChainChanged(function (chain) {
-      setChainId(chain);
+      // setChainId(chain);
+      setChainId('0x89');
+      
     });
 
     Moralis.onAccountsChanged(function (address) {
@@ -200,7 +202,8 @@ function MoralisDappProvider({ children }) {
   }, []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => setChainId(web3.givenProvider?.chainId));
+  // useEffect(() => setChainId(web3.givenProvider?.chainId));
+  useEffect(() => setChainId('0x89'));
   useEffect(
     () => setWalletAddress(web3.givenProvider?.selectedAddress || user?.get("ethAddress")),
     [web3, user]

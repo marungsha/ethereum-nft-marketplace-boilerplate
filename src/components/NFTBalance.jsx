@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useMoralis } from "react-moralis";
-import { Card, Image, Tooltip, Modal, Input, Alert, Spin, Button, Typography } from "antd";
+import { Card, Image, Tooltip, Modal, Input, Alert, Spin, Button, Typography, List, Avatar } from "antd";
 import { useNFTBalance } from "hooks/useNFTBalance";
-import { FileSearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import { FileSearchOutlined, InfoCircleOutlined, ShoppingCartOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { useMoralisDapp } from "providers/MoralisDappProvider/MoralisDappProvider";
 import { getExplorer } from "helpers/networks";
 import { useWeb3ExecuteFunction } from "react-moralis";
@@ -29,6 +29,7 @@ function NFTBalance() {
   const { Moralis } = useMoralis();
   const [visible, setVisibility] = useState(false);
   const [nftToSend, setNftToSend] = useState(null);
+  const [nftSelected, setNFTSelected] = useState(null);
   const [price, setPrice] = useState(1);
   const [loading, setLoading] = useState(true);
   const contractProcessor = useWeb3ExecuteFunction();
@@ -43,6 +44,10 @@ function NFTBalance() {
   useEffect(() => {
     setLoading(isLoading)
   }, [isLoading])
+
+  function showCollabDetails(nft) {
+    setNFTSelected(nft)
+  }
 
   async function list(nft, listPrice) {
     setLoading(true);
@@ -72,7 +77,7 @@ function NFTBalance() {
       onError: (error) => {
         setLoading(false);
         failList();
-      },
+      }
     });
   }
 
@@ -164,6 +169,16 @@ function NFTBalance() {
     itemImage.save();
   }
 
+  function showCollabDetails(nft) {
+    // console.log(nft)
+    setNFTSelected(nft)
+  }
+
+  function showNFTDetails(nft) {
+    setNFTSelected(nft)
+  }
+
+
   return (
     <>
       <div style={styles.NFTs}>
@@ -190,7 +205,7 @@ function NFTBalance() {
           NFTBalance.filter(nft => nft.metadata).map((nft, index) => (
             <Card
               hoverable
-              actions={[
+              actions={!nft.metadata.is_collab?[
                 <Tooltip title="View On Blockexplorer">
                   <FileSearchOutlined
                     onClick={() =>
@@ -201,6 +216,23 @@ function NFTBalance() {
                     }
                   />
                 </Tooltip>,
+                <Tooltip title="List NFT for sale">
+                  <ShoppingCartOutlined onClick={() => handleSellClick(nft)} />
+                </Tooltip>,
+              ]:[
+                <Tooltip title="View On Blockexplorer">
+                  <FileSearchOutlined
+                    onClick={() =>
+                      window.open(
+                        `${getExplorer(chainId)}address/${nft.token_address}`,
+                        "_blank"
+                      )
+                    }
+                  />
+                </Tooltip>,
+                <Tooltip title="View Collab Details">
+                <UsergroupAddOutlined onClick={() => showCollabDetails(nft)} />
+              </Tooltip>,
                 <Tooltip title="List NFT for sale">
                   <ShoppingCartOutlined onClick={() => handleSellClick(nft)} />
                 </Tooltip>,
@@ -232,6 +264,45 @@ function NFTBalance() {
             </Card>
           ))}
       </div>
+      
+
+      <Modal
+        title={`${nftSelected && nftSelected.metadata?.name} collaboration details`}
+        visible={Boolean(nftSelected)}
+        onCancel={() => setNFTSelected(null)}
+        onOk={() => setNFTSelected(null)}
+        okText="List"
+        footer={[ <Button disabled={loading} onClick={() => setNFTSelected(null)}>OK</Button> ]}
+      >
+        <img
+            src={`${nftSelected?.metadata?.image}`}
+            style={{
+              width: "250px",
+              margin: "auto",
+              borderRadius: "10px",
+              marginBottom: "15px",
+            }}
+          />
+          <Typography.Text>
+            {nftSelected?.metadata?.description}
+          </Typography.Text>
+          <List
+                header={<div>Collab NFTs list</div>}
+                bordered
+                dataSource={nftSelected?.metadata?.collab}
+                renderItem={(item, idx)=> (
+                  <List.Item
+                  key={idx}
+                  actions={[ <a key="list-loadmore-more" onClick={() => { showNFTDetails(item) }}>Info</a>]}
+                  >
+                    <List.Item.Meta 
+                       avatar={<Avatar src={item?.image || "error"} />}
+                       title={<Typography.Text >{item.metadata?item.metadata.name:item.name}</Typography.Text> }
+                       ></List.Item.Meta>
+                  </List.Item>
+                )}
+              />
+      </Modal>
 
       <Modal
         title={`List ${nftToSend?.name} #${nftToSend?.token_id} For Sale`}
