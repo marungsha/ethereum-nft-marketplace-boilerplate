@@ -109,6 +109,9 @@ const App = ({ isServerInfo }) => {
                 <Menu.Item key="collaborate">
                   <NavLink to="/collaborate" > Collaborate</NavLink>
                 </Menu.Item>
+                <Menu.Item key="movie">
+                  <NavLink to="/movies" > Movies</NavLink>
+                </Menu.Item>
               </Menu>
               <div style={styles.headerRight}>
                 <Chains />
